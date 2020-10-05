@@ -35,4 +35,17 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+
+    // Koin for Kotlin
+    implementation "org.koin:koin-core:2.1.6"
+    // Koin for Unit tests
+    testImplementation "org.koin:koin-test:2.1.6"
+    // Koin AndroidX Scope features
+    implementation "org.koin:koin-androidx-scope:2.1.6"
+// Koin AndroidX ViewModel features
+    implementation "org.koin:koin-androidx-viewmodel:2.1.6"
+// Koin AndroidX Fragment features
+    implementation "org.koin:koin-androidx-fragment:2.1.6"
+
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
 }
