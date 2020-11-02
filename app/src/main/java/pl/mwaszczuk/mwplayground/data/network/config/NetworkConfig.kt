@@ -1,12 +1,17 @@
 package pl.mwaszczuk.mwplayground.data.network.config
 
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 @Suppress("LongParameterList", "UnusedPrivateMember")
 internal fun provideOkHttpClient(): OkHttpClient {
     return OkHttpClient()
         .newBuilder()
+        .addInterceptor(HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        })
         .build()
 }
 
@@ -15,6 +20,7 @@ internal fun provideRetrofit(
 ): Retrofit {
     val retrofitBuilder = Retrofit.Builder()
         .baseUrl(API_URL)
+        .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
 
     return retrofitBuilder.build()

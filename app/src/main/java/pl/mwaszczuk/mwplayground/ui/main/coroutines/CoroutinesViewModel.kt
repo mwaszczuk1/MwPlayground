@@ -8,6 +8,10 @@ class CoroutinesViewModel(
     private val useCase: CoroutinesUseCase
 ) : ViewModel() {
 
+    val citiesList = listOf(
+        "Warsaw", "Bialystok", "Cracow", "Gdansk", "Poznan"
+    )
+
     // Simple pattern with a private mutable live data and public liveData
     // And i populate it by providing the data from a method. Here it is getTriggerWeather(city: String)
     private val _weather = MutableLiveData<WeatherDto>()
@@ -53,7 +57,7 @@ class CoroutinesViewModel(
         viewModelScope.launch(Dispatchers.IO) {} // It runs on IO thread. Cant do ".value" here. Have to do .postValue()
     }
 
-    private var jobToCancel: Job? = null
+    var jobToCancel: Job? = null
     val cancelableWeather = MutableLiveData<WeatherDto>()
 
     fun getMultipleCitiesAsyncFromList(dispatcher: CoroutineDispatcher, list: List<String>) {
