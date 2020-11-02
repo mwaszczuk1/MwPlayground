@@ -22,4 +22,4 @@ internal fun provideRetrofit(
 
 private const val JSON_MEDIA_TYPE = "application/json"
 private const val HTTPS_PREFIX = "https://"
-private const val API_URL = HTTPS_PREFIX + "api_base_url"
+private const val API_URL = HTTPS_PREFIX + "api.openweathermap.org/"

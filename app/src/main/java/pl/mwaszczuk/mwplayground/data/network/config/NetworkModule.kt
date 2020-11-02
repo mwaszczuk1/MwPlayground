@@ -12,4 +12,6 @@ val networkModule = module {
     // Apis
     single(named("1")) { provideMainApi(get()) }
     single(named("2")) { provideMainApi(get()) }
+
+    single { provideWeatherApi(get()) }
 }
