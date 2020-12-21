@@ -1,4 +1,4 @@
-package pl.mwaszczuk.mwplayground.ui.main.coroutines
+package pl.mwaszczuk.mwplayground.ui.main
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -7,7 +7,7 @@ import kotlinx.coroutines.withContext
 import pl.mwaszczuk.mwplayground.data.network.dto.WeatherDto
 import pl.mwaszczuk.mwplayground.data.repository.main.WeatherRepository
 
-class CoroutinesUseCase(
+class WeatherUseCase(
     private val repo: WeatherRepository
 ) {
 
@@ -27,5 +27,4 @@ class CoroutinesUseCase(
             )
         }
     }
-
 }

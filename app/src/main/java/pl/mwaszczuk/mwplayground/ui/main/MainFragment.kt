@@ -21,13 +21,15 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupListeners()
     }
 
     private fun setupListeners() {
         btnCoroutines.setOnClickListener {
-            findNavController().navigate(R.id.coroutinesFragment, null)
+            findNavController().navigate(R.id.coroutinesFragment)
+        }
+        btnFlows.setOnClickListener {
+            findNavController().navigate(R.id.flowsFragment)
         }
     }
 }

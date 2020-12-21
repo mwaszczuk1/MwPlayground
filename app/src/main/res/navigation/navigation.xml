@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
     app:startDestination="@id/mainFragment">
 
@@ -9,13 +8,17 @@
         android:id="@+id/mainFragment"
         android:name="pl.mwaszczuk.mwplayground.ui.main.MainFragment"
         android:label="Blank"
-        tools:layout="@layout/main_fragment"
         />
 
     <fragment
         android:id="@+id/coroutinesFragment"
         android:name="pl.mwaszczuk.mwplayground.ui.main.coroutines.CoroutinesFragment"
         android:label="Blank"
-        tools:layout="@layout/fragment_coroutines"
+        />
+
+    <fragment
+        android:id="@+id/flowsFragment"
+        android:name="pl.mwaszczuk.mwplayground.ui.main.flows.FlowsFragment"
+        android:label="Blank"
         />
 </navigation>
