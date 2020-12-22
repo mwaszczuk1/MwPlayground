@@ -53,7 +53,7 @@ class FlowsViewModel(
         .retry(1) // retry x times
         .retryWhen { cause, attempt -> attempt == 1L } // retry when
 
-    // 3. StateFlow (from coroutines 1.4.0+)
+    // 4. StateFlow (from coroutines 1.4.0+)
     // This is a LiveData example with a trigger
     // You switchmap the trigger value and emit a liveData with a value.
     private val _stateFlow = MutableStateFlow<WeatherDto?>(null) // have to pass a value here. I can pass a ViewState.Loading here or something for starters
@@ -66,91 +66,6 @@ class FlowsViewModel(
                 // do sth with that value
             }
             _stateFlow.value = null // I can update a mutableStateFlow like that
-        }
-    }
-
-    // 4. Trigger async example. Trigger + switchmap with livedata builder but the block is async
-    // an example how to make many async calls.
-    // The calls are made immediatly, and then when every call responds, the list of results is returned
-    private val _asyncCityTrigger = MutableLiveData<List<String>>()
-    val asyncCityTriggerLiveData = _asyncCityTrigger.switchMap { trigger ->
-        val results = trigger.map {
-            viewModelScope.async { useCase.getWeather(it) }
-        }
-        liveData {
-            emit(results.map { it.await() })
-        }
-    }
-
-    private val _multipleCitiesLiveDataFromMethod = MutableLiveData<List<WeatherDto>>()
-    val multipleCitiesLiveDataFromMethod: LiveData<List<WeatherDto>> = _multipleCitiesLiveDataFromMethod
-
-    fun getTriggerWeather(city: String) {
-        viewModelScope.launch {
-            // In a coroutine i have to use postValue on a LiveData
-            _weather.postValue(useCase.getWeather(city))
-        }
-        // I can specify it like that:
-        viewModelScope.launch(Dispatchers.IO) {} // It runs on IO thread. Cant do ".value" here. Have to do .postValue()
-    }
-
-    var jobToCancel: Job? = null
-    val cancelableWeather = MutableLiveData<WeatherDto>()
-
-    fun getMultipleCitiesAsyncFromList(dispatcher: CoroutineDispatcher, list: List<String>) {
-        viewModelScope.launch(dispatcher) {
-            val results = list.map {
-                async { useCase.getWeather(it) }
-            }
-            _multipleCitiesLiveDataFromMethod.postValue(results.map { it.await() })
-        }
-    }
-
-    fun getMultipleCitiesSequentiallyFromList(dispatcher: CoroutineDispatcher, list: List<String>) {
-        viewModelScope.launch(dispatcher) {
-            val results = list.map {
-                useCase.getWeather(it)
-            }
-            _multipleCitiesLiveDataFromMethod.postValue(results)
-        }
-    }
-
-    fun getMultipleCitiesAsync(dispatcher: CoroutineDispatcher) {
-        viewModelScope.launch(dispatcher) {
-            val warsawDeferred = async { useCase.getWeather("Warsaw") }
-            val bialystokDeferred = async { useCase.getWeather("Bialystok") }
-            val cracowDeferred = async { useCase.getWeather("Cracow") }
-            val gdanskDeferred = async { useCase.getWeather("Gdansk") }
-            val poznanDeferred = async { useCase.getWeather("Poznan") }
-
-            _multipleCitiesLiveDataFromMethod.postValue(listOf(
-                warsawDeferred.await(),
-                bialystokDeferred.await(),
-                cracowDeferred.await(),
-                gdanskDeferred.await(),
-                poznanDeferred.await()
-            ))
-        }
-    }
-
-    fun getMultipleCitiesSequentially(dispatcher: CoroutineDispatcher) {
-        viewModelScope.launch(dispatcher) {
-            val warsaw = useCase.getWeather("Warsaw")
-            val bialystok = useCase.getWeather("Bialystok")
-            val cracow = useCase.getWeather("Cracow")
-            val gdansk = useCase.getWeather("Gdansk")
-            val poznan = useCase.getWeather("Poznan")
-
-            _multipleCitiesLiveDataFromMethod.postValue(listOf(
-                warsaw, bialystok, cracow, gdansk, poznan
-            ))
-        }
-    }
-
-    fun getWeatherCancellable(dispatcher: CoroutineDispatcher) {
-        jobToCancel = viewModelScope.launch(dispatcher) {
-            delay(5000)
-            cancelableWeather.postValue(useCase.getWeather("bialystok"))
         }
     }
 }
